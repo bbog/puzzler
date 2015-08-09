@@ -1,0 +1,33 @@
+#main-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/** First step container **/
+.file-upload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.file-upload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+
+/** Second step container **/
+#step-two-container canvas {
+    margin: 0 auto;
+    width: 100%;
+    display: block;
+    border: 1px solid #eee;
+    padding: 10px;
+}

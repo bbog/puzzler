@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+    <head>
+
+        <!-- CSS -->
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <!-- custom -->
+        <link rel="stylesheet" href="css/style.css">
+
+
+        <!-- Javascript -->
+
+        <!-- Libraries -->
+        <!-- HammerJS -->
+        <script src="http://hammerjs.github.io/dist/hammer.min.js"></script>
+
+        <!-- custom -->
+        <script src="js/utils.js"></script>
+        <script src="js/upload.js"></script>
+        <script src="js/canvas.js"></script>
+    </head>
+    <body>
+
+
+    <div id="main-container">
+
+        <!-- First step: uploading the image -->
+        <div id="step-one-container">
+            <h3 class="page-header">Step 1</h3>
+
+            <p>
+                Choose the image that will be used to create the puzzle
+            </p>
+
+            <input id="upload-file" placeholder="Choose File" disabled="disabled" />
+            <div class="file-upload btn btn-primary">
+                <span>Upload</span>
+                <input type="file" id="upload-button" name="file" class="upload"/>
+            </div>
+        </div>
+
+        <div id="step-two-container" style="display: none;">
+
+            <h3 class="page-header">Step 2</h3>
+
+            <p>
+                Select the number of puzzle pieces
+            </p>
+
+            <canvas id="processing-canvas" />
+        </div>
+
+    </div>
+
+
+        <br/>
+        <br/>
+        <style>
+
+          #container {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            top: 100px;
+            left: 20px;
+          }
+
+         .block {
+            border: 1px dotted gray; 
+            width: 33%; 
+            height: 33%; 
+            display: inline-block;
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+         }
+
+         .corner {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          background-color: red;
+          opacity: 0.6;
+         }
+
+         .bottom {
+          bottom: 0px;
+         }
+
+         .right {
+          right: 0px;
+         }
+        </style>
+        <div id="container" style="display: none;">
+        <div id="corner" class="corner bottom right"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+        </div>
+
+
+        <script>
+            
+
+        </script>
+
+        <!-- custom -->
+        <script src="js/puzzler.js"></script>
+    </body>
+</html>
+
+
