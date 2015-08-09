@@ -10,12 +10,54 @@ function getGridSize () {
 }
 
 
+function drawCanvasLine (context, originX, originY, endX, endY) {
+
+	context.setLineDash([5]);
+	context.strokeStyle = '#ff0000';
+
+	context.beginPath();
+	context.moveTo(originX, originY);
+	context.lineTo(endX, endY);
+	context.stroke();
+}
+
+
 function drawGuidelinesOnCanvas (canvas) {
+
+	var context = canvas.getContext('2d');
 
 	var width  = canvas.width,
 		height = canvas.height,
-		gridSize = getGridSize();
+		gridSize = getGridSize(),
+		rowHeight = Math.round(height / gridSize.rows),
+		columnWidth = Math.round(width / gridSize.columns);
 
+	// drawing the row lines
+	var rowIndex = 1,
+		totalRows = gridSize.rows;
+	for ( ; rowIndex < totalRows; rowIndex++) {
+
+		var originX = 0,
+			originY = rowIndex * rowHeight;
+			endX = width,
+			endY = originY;
+
+		drawCanvasLine(context, originX, originY, endX, endY);
+	}
+
+
+	// drawing the column lines
+	var columnIndex = 1,
+		totalColumns = gridSize.columns;
+	for ( ; columnIndex < totalColumns; columnIndex++) {
+
+		var originX = columnIndex * columnWidth,
+			originY = 0;
+			endX = originX,
+			endY = height;
+
+		drawCanvasLine(context, originX, originY, endX, endY);
+	}
 
 }
 
