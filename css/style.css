@@ -31,3 +31,9 @@
     border: 1px solid #eee;
     padding: 10px;
 }
+
+#grid-size {
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: bold;
+}

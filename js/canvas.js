@@ -1,12 +1,35 @@
 
 
+var gridSize,
+	canvasImage;
+
+var minRows = 3,
+	maxRows = 10,
+	minColumns = 3,
+	maxColumns = 10;
 
 function getGridSize () {
 	// fixed hardcoded value for now
-	return {
-		rows: 4,
-		columns: 4
-	};
+	if (!gridSize) {
+		gridSize = {
+			rows: 4,
+			columns: 4
+		};
+	}
+
+	return gridSize;
+}
+
+function setGridSize (newSize) {
+	gridSize = newSize;
+
+	var gridSizeContainer = document.getElementById('grid-size');
+	gridSizeContainer.innerHTML = gridSize.rows + ' x ' + gridSize.columns;
+
+	var canvas = document.getElementById('processing-canvas');
+	clearCanvas(canvas);
+	drawImageInCanvas(canvasImage, canvas);
+	drawGuidelinesOnCanvas(canvas);
 }
 
 
@@ -62,6 +85,12 @@ function drawGuidelinesOnCanvas (canvas) {
 }
 
 
+function clearCanvas (canvas) {
+	var context = canvas.getContext('2d');
+	context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+
 function drawImageInCanvas (imageData, canvas) {
 
 	var context = canvas.getContext('2d');
@@ -95,10 +124,50 @@ function drawImageInCanvas (imageData, canvas) {
 }
 
 
+function bindGridSizeActions () {
+
+	var decreseGridButton = document.getElementById('decrease-grid-size-button'),
+		increseGridButton = document.getElementById('increase-grid-size-button'),
+		gridSizeContainer = document.getElementById('grid-size');
+
+	var gridSize = getGridSize();
+
+	increseGridButton.onclick = function () {
+
+		gridSize.columns++;
+		gridSize.rows++;
+
+		if (gridSize.rows <= maxRows && gridSize.columns <= maxColumns) {
+			setGridSize(gridSize);
+		}
+	};
+
+	decreseGridButton.onclick = function () {
+
+		gridSize.columns--;
+		gridSize.rows--;
+
+		if (gridSize.rows >= minRows && gridSize.columns >= minColumns) {
+			setGridSize(gridSize);
+		}
+	};
+}
+
+
+function bindCanvasHandlers () {
+
+	bindGridSizeActions();
+}
+
+
 function initStepTwo(imageData) {
 
 	var stepTwoContainer = document.getElementById('step-two-container'),
 		canvas = document.getElementById('processing-canvas');
+
+	canvasImage = imageData;
+
+	bindCanvasHandlers();
 		
 	drawImageInCanvas(imageData, canvas);
 
