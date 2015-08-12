@@ -10,7 +10,7 @@
 		gridSizeContainer = $('grid-size'),
 		decreseGridButton = $('decrease-grid-size-button'),
 		increseGridButton = $('increase-grid-size-button'),
-		createPuzzleButton = $('createPuzzleButton');
+		createPuzzleButton = $('create-puzzle-button');
 
 	// default values
 	var grid = {
@@ -33,8 +33,9 @@
 
 	// we don't need no jQuery
 	function $(id) {
+
 		return document.getElementById(id);
-	}
+	};
 
 
 
@@ -130,7 +131,6 @@
 	function updateCanvas () {
 
 		drawImageInCanvas();
-		drawGuidelinesOnCanvas();
 	};
 
 
@@ -217,7 +217,7 @@
 		}
 
 		image.src = imageData;
-	}
+	};
 
 
 	function bindGridSizeActions () {
@@ -247,22 +247,31 @@
 	function bindCanvasHandlers () {
 
 		bindGridSizeActions();
+
+		createPuzzleButton.onclick = function () {
+			initStepThree();
+		};
 	}
 
 
 	function initStepTwo(imageData) {
 
-		updateGridText();
-
 		bindCanvasHandlers();
-			
-		drawImageInCanvas();
 
-		var stepTwoContainer = document.getElementById('step-two-container');
+		updateGridText();
+		updateCanvas();
+
+		var stepTwoContainer = $('step-two-container');
 		showContainer(stepTwoContainer);
 	}
 
 
+	/** Step three - actual puzzle **/
+	function initStepThree () {
+
+		var stepThreeContainer = $('step-three-container');
+		showContainer(stepThreeContainer);
+	};
 
 
 
