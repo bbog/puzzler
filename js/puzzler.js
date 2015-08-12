@@ -7,7 +7,12 @@
 		uploadFile   = $('upload-file'),
 		canvas  = $('processing-canvas'),
 		context = canvas.getContext('2d'),
-		gridSizeContainer = $('grid-size'),
+		gridSizeRowsContainer = $('grid-size-rows'),
+		gridSizeColumnsContainer = $('grid-size-columns'),
+		increaseGridRowsButton = $('increase-grid-rows-button'),
+		decreaseGridRowsButton = $('decrease-grid-rows-button'),
+		increaseGridColumnsButton = $('increase-grid-columns-button'),
+		decreaseGridColumnsButton = $('decrease-grid-columns-button'),
 		decreseGridButton = $('decrease-grid-size-button'),
 		increseGridButton = $('increase-grid-size-button'),
 		createPuzzleButton = $('create-puzzle-button');
@@ -105,14 +110,16 @@
 
 
 	/** Step two - grid settings **/
-	function setGridSize (rows, columns) {
+	function setGridSize (newGrid) {
 
-		if (rows) {
-			grid.rows = rows;	
+		newGrid = newGrid || {};
+
+		if (newGrid.rows) {
+			grid.rows = newGrid.rows;	
 		}
 
-		if (columns) {
-			grid.columns = columns;
+		if (newGrid.columns) {
+			grid.columns = newGrid.columns;
 		}
 		
 
@@ -124,7 +131,8 @@
 
 	function updateGridText () {
 
-		gridSizeContainer.innerHTML = grid.rows + ' x ' + grid.columns;
+		gridSizeRowsContainer.innerHTML = grid.rows;
+		gridSizeColumnsContainer.innerHTML = grid.columns;
 	};
 
 
@@ -222,23 +230,44 @@
 
 	function bindGridSizeActions () {
 
-		increseGridButton.onclick = function () {
+		increaseGridRowsButton.onclick = function () {
 
-			var columns = grid.columns + 1,
-				rows = grid.rows + 1;
-
-			if (rows <= gridOptions.maxRows && columns <= gridOptions.maxColumns) {
-				setGridSize(rows, columns);
+			var rows = grid.rows + 1;
+			if (rows <= gridOptions.maxRows) {
+				setGridSize({
+					rows: rows
+				});
 			}
 		};
 
-		decreseGridButton.onclick = function () {
+		decreaseGridRowsButton.onclick = function () {
 
-			var columns = grid.columns - 1,
-				rows = grid.rows - 1;
+			var rows = grid.rows - 1;
+			if (rows >= gridOptions.minRows) {
+				setGridSize({
+					rows: rows
+				});
+			}
+		};
 
-			if (rows >= gridOptions.minRows && columns >= gridOptions.minColumns) {
-				setGridSize(rows, columns);
+
+		increaseGridColumnsButton.onclick = function () {
+
+			var columns = grid.columns + 1;
+			if (columns <= gridOptions.maxColumns) {
+				setGridSize({
+					columns: columns
+				});
+			}
+		};
+
+		decreaseGridColumnsButton.onclick = function () {
+
+			var columns = grid.columns - 1;
+			if (columns >= gridOptions.minColumns) {
+				setGridSize({
+					columns: columns
+				});
 			}
 		};
 	}

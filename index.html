@@ -46,16 +46,23 @@
             </p>
 
             <div id="pieces-settings">
-                <div id="decrease-grid-size-button" class="btn btn-primary">
-                    <span> - </span>
+
+                <div class="grid-size-wrapper">
+                    <button id="increase-grid-rows-button" class="grid-button arrow-up"></button>
+                    <div id="grid-size-rows" class="grid-size well well-sm">3</div>
+                    <button id="decrease-grid-rows-button" class="grid-button arrow-down"></button>
                 </div>
 
-                <!-- will hold the grid size -->
-                <div id="grid-size" class="well well-sm"></div>
-
-                <div id="increase-grid-size-button" class="btn btn-primary">
-                    <span> + </span>
+                <div class="grid-size-wrapper">
+                    <div class="grid-or-sign">&times;</div>
                 </div>
+
+                <div class="grid-size-wrapper">
+                    <button id="increase-grid-columns-button" class="grid-button arrow-up"></button>
+                    <div id="grid-size-columns" class="grid-size well well-sm">3</div>
+                    <button id="decrease-grid-columns-button" class="grid-button arrow-down"></button>
+                </div>
+
             </div>
 
             <canvas id="processing-canvas"></canvas>
