@@ -13,8 +13,8 @@
 		decreaseGridRowsButton = $('decrease-grid-rows-button'),
 		increaseGridColumnsButton = $('increase-grid-columns-button'),
 		decreaseGridColumnsButton = $('decrease-grid-columns-button'),
-		decreseGridButton = $('decrease-grid-size-button'),
-		increseGridButton = $('increase-grid-size-button'),
+		increaseGridButton = $('increase-grid-size-button'),
+		decreaseGridButton = $('decrease-grid-size-button'),
 		createPuzzleButton = $('create-puzzle-button');
 
 	// default values
@@ -230,6 +230,25 @@
 
 	function bindGridSizeActions () {
 
+		increaseGridButton.onclick = function () {
+
+			var columns = grid.columns + 1,
+				rows = grid.rows + 1;
+
+			if (rows > gridOptions.maxRows) {
+				rows = gridOptions.maxRows;
+			}
+
+			if (columns > gridOptions.maxColumns) {
+				columns = gridOptions.maxColumns;
+			}
+
+			setGridSize({
+				rows: rows, 
+				columns: columns
+			});
+		};
+
 		increaseGridRowsButton.onclick = function () {
 
 			var rows = grid.rows + 1;
@@ -248,6 +267,27 @@
 					rows: rows
 				});
 			}
+		};
+
+
+
+		decreaseGridButton.onclick = function () {
+
+			var columns = grid.columns - 1,
+				rows = grid.rows - 1;
+
+			if (rows < gridOptions.minRows) {
+				rows = gridOptions.minRows;
+			}
+
+			if (columns < gridOptions.minColumns) {
+				columns = gridOptions.minColumns;
+			}
+
+			setGridSize({
+				rows: rows, 
+				columns: columns
+			});
 		};
 
 
