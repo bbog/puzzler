@@ -18,8 +18,6 @@
 
         <!-- custom -->
         <script src="js/utils.js"></script>
-        <script src="js/upload.js"></script>
-        <script src="js/canvas.js"></script>
     </head>
     <body>
 
@@ -54,9 +52,8 @@
                     <span> - </span>
                 </div>
 
-                <div id="grid-size" class="well well-sm">
-                4 x 4
-                </div>
+                <!-- will hold the grid size -->
+                <div id="grid-size" class="well well-sm"></div>
 
                 <div id="increase-grid-size-button" class="btn btn-primary">
                     <span> + </span>
@@ -64,6 +61,11 @@
             </div>
 
             <canvas id="processing-canvas" />
+
+
+            <div id="create-puzzle-button" class="btn btn-primary">
+                    <span>Create puzzle</span>
+                </div>
         </div>
 
         <div id="step-three-container" style="display: none;">
