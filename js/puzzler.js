@@ -1,11 +1,14 @@
 (function () {
 
 	// global references
-	var imageData;
+	var imageData,
+		uploadedImage,
+		puzzle;
 
 	var uploadButton = $('upload-button'),
 		uploadFile   = $('upload-file'),
 		canvas  = $('processing-canvas'),
+		canvasForPieces = document.createElement('canvas'),
 		context = canvas.getContext('2d'),
 		gridSizeRowsContainer = $('grid-size-rows'),
 		gridSizeColumnsContainer = $('grid-size-columns'),
@@ -190,7 +193,7 @@
 	};
 
 
-	function clearCanvas () {
+	function clearCanvas (canvas, context) {
 
 		context.clearRect(0, 0, canvas.width, canvas.height);
 	};
@@ -198,9 +201,9 @@
 
 	function drawImageInCanvas () {
 
-		var image = new Image();
+		uploadedImage = new Image();
 
-		image.onload = function () {
+		uploadedImage.onload = function () {
 
 			var imageWidth  = this.width,
 				imageHeight = this.height;
@@ -218,13 +221,13 @@
 				destW = imageWidth,
 				destH = imageHeight;
 
-			clearCanvas();
-			context.drawImage(image, srcX, srcY, srcW, srcH, destX, destY, destW, destH);
+			clearCanvas(canvas, context);
+			context.drawImage(uploadedImage, srcX, srcY, srcW, srcH, destX, destY, destW, destH);
 
 			drawGuidelinesOnCanvas();
 		}
 
-		image.src = imageData;
+		uploadedImage.src = imageData;
 	};
 
 
@@ -310,7 +313,7 @@
 				});
 			}
 		};
-	}
+	};
 
 
 	function bindCanvasHandlers () {
@@ -320,7 +323,7 @@
 		createPuzzleButton.onclick = function () {
 			initStepThree();
 		};
-	}
+	};
 
 
 	function initStepTwo(imageData) {
@@ -332,11 +335,95 @@
 
 		var stepTwoContainer = $('step-two-container');
 		showContainer(stepTwoContainer);
-	}
+	};
 
 
 	/** Step three - actual puzzle **/
+	function initCanvasForPieces () {
+
+		var sourceCanvasWidth  = parseInt(canvas.width),
+			sourceCanvasHeight = parseInt(canvas.height);
+
+		var pieceWidth  = sourceCanvasWidth / grid.columns,
+			pieceHeight = sourceCanvasHeight / grid.rows;
+
+		canvasForPieces.width  = pieceWidth,
+		canvasForPieces.height = pieceHeight;
+	};
+
+	function getPuzzlePartImage (rowIndex, columnIndex) {
+
+		var context = canvasForPieces.getContext('2d'),
+			canvasWidth = canvasForPieces.width,
+			canvasHeight = canvasForPieces.height;
+
+		clearCanvas(canvasForPieces, context);
+
+		var srcX = columnIndex * canvasWidth,
+			srcY = rowIndex * canvasHeight,
+			srcW = canvasWidth,
+			srcH = canvasHeight;
+
+		var destX = 0,
+			destY = 0,
+			destW = canvasWidth,
+			destH = canvasHeight;
+
+		context.drawImage(uploadedImage, srcX, srcY, srcW, srcH, destX, destY, destW, destH);
+		return canvasForPieces.toDataURL();
+	};
+
+	function createPuzzleMatrix () {
+		
+		puzzle = [];
+
+		var order = 0;
+		
+		var rowIndex = 0,
+			totalRows = grid.rows,
+			columnIndex = 0,
+			totalColumns = grid.columns;
+
+		for ( ; rowIndex < totalRows; rowIndex++) {
+
+			puzzle[rowIndex] = [];
+
+			for (columnIndex = 0; columnIndex < totalColumns; columnIndex++) {
+
+				puzzle[rowIndex][columnIndex] = {
+					order: order
+				};
+
+				order++;
+			}
+		}
+	};
+
+	function populatePuzzleMatrix () {
+
+		var rowIndex = 0,
+			totalRows = grid.rows,
+			columnIndex = 0,
+			totalColumns = grid.columns;
+
+		for ( ; rowIndex < totalRows; rowIndex++) {
+
+			for (columnIndex = 0; columnIndex < totalColumns; columnIndex++) {
+
+				var puzzlePartImage = getPuzzlePartImage(rowIndex, columnIndex);
+				puzzle[rowIndex][columnIndex].image = puzzlePartImage;
+			}
+		}	
+	};
+
+
 	function initStepThree () {
+
+		createPuzzleMatrix();
+
+		initCanvasForPieces();
+
+		populatePuzzleMatrix();
 
 		var stepThreeContainer = $('step-three-container');
 		showContainer(stepThreeContainer);
@@ -379,7 +466,7 @@
           // place canvas images inside the puzzle
 
 
-
+/*
 
           var container = document.getElementById('container');
             var mc = new Hammer(container);
@@ -413,3 +500,5 @@
                 container.style.width  = width + ev.deltaX + 'px';
                 container.style.height = height + ev.deltaY + 'px';
             });
+
+            */
