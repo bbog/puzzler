@@ -13,141 +13,107 @@
         <!-- Javascript -->
 
         <!-- Libraries -->
-        <!-- HammerJS -->
-        <!--
-        <script src="http://hammerjs.github.io/dist/hammer.min.js"></script>
-        -->
+        <!-- Zepto -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
+        <!-- GSAP -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenLite.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js"></script>
 
     </head>
     <body>
 
 
-    <div id="main-container">
+        <div id="main-container">
 
-        <!-- First step: uploading the image -->
-        <div id="step-one-container">
-            <h3 class="page-header">Step 1</h3>
+            <!-- First step: uploading the image -->
+            <div id="step-one-container">
+                <h3 class="page-header">Step 1</h3>
 
-            <p>
-                Choose the image that will be used to create the puzzle
-            </p>
+                <div class="container-content">
+                    <p>
+                        Choose the image that will be used to create the puzzle
+                    </p>
 
-            <input id="upload-file" placeholder="Choose File" disabled="disabled" />
-            <div class="file-upload btn btn-primary">
-                <span>Upload</span>
-                <input type="file" id="upload-button" name="file" class="upload"/>
-            </div>
-        </div>
-
-        <div id="step-two-container" style="display: none;">
-
-            <h3 class="page-header">Step 2</h3>
-
-            <p>
-                Select the number of puzzle pieces
-            </p>
-
-            <div id="pieces-settings">
-
-                <div class="grid-size-wrapper">
-
-                    <button id="decrease-grid-size-button" class="grid-button arrow-left" style="left: 0px; top: 39px;"></button>
-
-                    <button id="increase-grid-rows-button" class="grid-button arrow-up" style="left: 39px; top: 0px;"></button>
-                    <div id="grid-size-rows" class="grid-size well well-sm" style="left: 34px; top: 34px;">3</div>
-                    <button id="decrease-grid-rows-button" class="grid-button arrow-down" style="left: 39px; top: 78px;"></button>
+                    <input id="upload-file" placeholder="Choose File" disabled="disabled" />
+                    <div class="file-upload btn btn-primary">
+                        <span>Upload</span>
+                        <input type="file" id="upload-button" name="file" class="upload"/>
+                    </div>
                 </div>
-
-                <div class="grid-size-wrapper" style="width: 40px;">
-                    <div class="grid-or-sign">&times;</div>
-                </div>
-
-                <div class="grid-size-wrapper">
-                    <button id="increase-grid-columns-button" class="grid-button arrow-up" style="left: 5px; top: 0px;"></button>
-                    <div id="grid-size-columns" class="grid-size well well-sm" style="left: 0px; top: 34px;">3</div>
-                    <button id="decrease-grid-columns-button" class="grid-button arrow-down" style="left: 5px; top: 78px;"></button>
-
-                    <button id="increase-grid-size-button" class="grid-button arrow-right" style="left: 44px; top: 39px;"></button>
-                </div>
-
             </div>
 
-            <canvas id="processing-canvas"></canvas>
+            <div id="step-two-container" style="display: none;">
+
+                <h3 class="page-header">Step 2</h3>
+
+                <div class="container-content">
+                    <p>
+                        Select the number of puzzle pieces
+                    </p>
+
+                    <div id="pieces-settings">
+
+                        <div class="grid-size-wrapper">
+
+                            <button id="decrease-grid-size-button" class="grid-button arrow-left" style="left: 0px; top: 39px;"></button>
+
+                            <button id="increase-grid-rows-button" class="grid-button arrow-up" style="left: 39px; top: 0px;"></button>
+                            <div id="grid-size-rows" class="grid-size well well-sm" style="left: 34px; top: 34px;">3</div>
+                            <button id="decrease-grid-rows-button" class="grid-button arrow-down" style="left: 39px; top: 78px;"></button>
+                        </div>
+
+                        <div class="grid-size-wrapper" style="width: 40px;">
+                            <div class="grid-or-sign">&times;</div>
+                        </div>
+
+                        <div class="grid-size-wrapper">
+                            <button id="increase-grid-columns-button" class="grid-button arrow-up" style="left: 5px; top: 0px;"></button>
+                            <div id="grid-size-columns" class="grid-size well well-sm" style="left: 0px; top: 34px;">3</div>
+                            <button id="decrease-grid-columns-button" class="grid-button arrow-down" style="left: 5px; top: 78px;"></button>
+
+                            <button id="increase-grid-size-button" class="grid-button arrow-right" style="left: 44px; top: 39px;"></button>
+                        </div>
+
+                    </div>
+
+                    <canvas id="processing-canvas"></canvas>
 
 
-            <br/>
-            <div id="create-puzzle-button" class="btn btn-primary">
-                <span>Create puzzle</span>
+                    <br/>
+                    <div id="create-puzzle-button" class="btn btn-primary">
+                        <span>Create puzzle</span>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div id="step-three-container" style="display: none;">
             
-            <h3 class="page-header">Step 3</h3>
 
-            <p>
-                Enjoy your puzzle!
-            </p>
+            <div id="step-three-container" style="display: none;">
+                
+                <h3 class="page-header">Step 3</h3>
 
-            <div id="puzzle-controls">
+                <div class="container-content">
 
-                <div class="btn btn-primary">
-                    <span>Reset</span>
+                    <p>
+                        Enjoy your puzzle!
+                    </p>
+
+                    <div id="puzzle-controls">
+
+                        <div class="btn btn-primary">
+                            <span>Reset</span>
+                        </div>
+
+                        <div class="btn btn-primary">
+                            <span>Scramble</span>
+                        </div>
+
+                        <div id="puzzle-container">
+                        </div>
+
+                    </div>
                 </div>
-
-                <div class="btn btn-primary">
-                    <span>Scramble</span>
-                </div>
-
             </div>
-
         </div>
-
-    </div>
-
-
-        <br/>
-        <br/>
-        <style>
-
-          #container {
-            width: 300px;
-            height: 300px;
-            position: absolute;
-            top: 100px;
-            left: 20px;
-          }
-
-         .block {
-            border: 1px dotted gray; 
-            width: 33%; 
-            height: 33%; 
-            display: inline-block;
-            margin: 0px;
-            padding: 0px;
-            box-sizing: border-box;
-         }
-
-         .corner {
-          position: absolute;
-          width: 40px;
-          height: 40px;
-          background-color: red;
-          opacity: 0.6;
-         }
-
-         .bottom {
-          bottom: 0px;
-         }
-
-         .right {
-          right: 0px;
-         }
-        </style>
-        <div id="container" style="display: none;">
-        <div id="corner" class="corner bottom right"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
-        </div>
-
 
         <!-- custom -->
         <script src="js/puzzler.js"></script>

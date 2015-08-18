@@ -5,20 +5,21 @@
 		uploadedImage,
 		puzzle;
 
-	var uploadButton = $('upload-button'),
-		uploadFile   = $('upload-file'),
-		canvas  = $('processing-canvas'),
+	var uploadButton = $('#upload-button'),
+		uploadFile   = $('#upload-file'),
+		canvas  = $('#processing-canvas').get(0),
 		canvasForPieces = document.createElement('canvas'),
 		context = canvas.getContext('2d'),
-		gridSizeRowsContainer = $('grid-size-rows'),
-		gridSizeColumnsContainer = $('grid-size-columns'),
-		increaseGridRowsButton = $('increase-grid-rows-button'),
-		decreaseGridRowsButton = $('decrease-grid-rows-button'),
-		increaseGridColumnsButton = $('increase-grid-columns-button'),
-		decreaseGridColumnsButton = $('decrease-grid-columns-button'),
-		increaseGridButton = $('increase-grid-size-button'),
-		decreaseGridButton = $('decrease-grid-size-button'),
-		createPuzzleButton = $('create-puzzle-button');
+		gridSizeRowsContainer = $('#grid-size-rows'),
+		gridSizeColumnsContainer = $('#grid-size-columns'),
+		increaseGridRowsButton = $('#increase-grid-rows-button'),
+		decreaseGridRowsButton = $('#decrease-grid-rows-button'),
+		increaseGridColumnsButton = $('#increase-grid-columns-button'),
+		decreaseGridColumnsButton = $('#decrease-grid-columns-button'),
+		increaseGridButton = $('#increase-grid-size-button'),
+		decreaseGridButton = $('#decrease-grid-size-button'),
+		createPuzzleButton = $('#create-puzzle-button'),
+		puzzleContainer = $('#puzzle-container');
 
 	// default values
 	var grid = {
@@ -34,17 +35,29 @@
 
 
 	/** Common utility methods **/
-	function showContainer (container) {
+	function animateContainersPresentation (containerToHideId, containerToShowId) {
 
-		container.style.display = 'block';
+		var containerToShow = $('#' + containerToShowId),
+			containerToHideContent = $('#' + containerToHideId + ' .container-content'),
+			containerToHideTitle   = $('#' + containerToHideId + ' .page-header');
+
+		containerToShow.css({
+			opacity: '0',
+			display: 'block'
+		});
+
+		TweenLite.to(containerToShow, 0.5, {
+			opacity: 1
+		});
+
+		TweenLite.to(containerToHideContent, 1.0, {
+			opacity: 0,
+			height: 0,
+			onComplete: function () {
+				containerToHideTitle.addClass('completed');
+			}
+		});
 	};
-
-	// we don't need no jQuery
-	function $(id) {
-
-		return document.getElementById(id);
-	};
-
 
 
 	/** Step one - upload **/
@@ -103,7 +116,7 @@
 			uploadFile.value = this.value;
 		};
 
-		uploadButton.addEventListener('change', handleFileSelect, false);
+		uploadButton.on('change', handleFileSelect, false);
 	};
 
 
@@ -233,7 +246,7 @@
 
 	function bindGridSizeActions () {
 
-		increaseGridButton.onclick = function () {
+		increaseGridButton.on('click', function () {
 
 			var columns = grid.columns + 1,
 				rows = grid.rows + 1;
@@ -250,9 +263,9 @@
 				rows: rows, 
 				columns: columns
 			});
-		};
+		});
 
-		increaseGridRowsButton.onclick = function () {
+		increaseGridRowsButton.on('click', function () {
 
 			var rows = grid.rows + 1;
 			if (rows <= gridOptions.maxRows) {
@@ -260,9 +273,9 @@
 					rows: rows
 				});
 			}
-		};
+		});
 
-		decreaseGridRowsButton.onclick = function () {
+		decreaseGridRowsButton.on('click', function () {
 
 			var rows = grid.rows - 1;
 			if (rows >= gridOptions.minRows) {
@@ -270,11 +283,11 @@
 					rows: rows
 				});
 			}
-		};
+		});
 
 
 
-		decreaseGridButton.onclick = function () {
+		decreaseGridButton.on('click', function () {
 
 			var columns = grid.columns - 1,
 				rows = grid.rows - 1;
@@ -291,10 +304,10 @@
 				rows: rows, 
 				columns: columns
 			});
-		};
+		});
 
 
-		increaseGridColumnsButton.onclick = function () {
+		increaseGridColumnsButton.on('click', function () {
 
 			var columns = grid.columns + 1;
 			if (columns <= gridOptions.maxColumns) {
@@ -302,9 +315,9 @@
 					columns: columns
 				});
 			}
-		};
+		});
 
-		decreaseGridColumnsButton.onclick = function () {
+		decreaseGridColumnsButton.on('click', function () {
 
 			var columns = grid.columns - 1;
 			if (columns >= gridOptions.minColumns) {
@@ -312,7 +325,7 @@
 					columns: columns
 				});
 			}
-		};
+		});
 	};
 
 
@@ -320,9 +333,9 @@
 
 		bindGridSizeActions();
 
-		createPuzzleButton.onclick = function () {
+		createPuzzleButton.on('click', function () {
 			initStepThree();
-		};
+		});
 	};
 
 
@@ -333,8 +346,7 @@
 		updateGridText();
 		updateCanvas();
 
-		var stepTwoContainer = $('step-two-container');
-		showContainer(stepTwoContainer);
+		animateContainersPresentation('step-one-container', 'step-two-container');
 	};
 
 
@@ -350,6 +362,7 @@
 		canvasForPieces.width  = pieceWidth,
 		canvasForPieces.height = pieceHeight;
 	};
+
 
 	function getPuzzlePartImage (rowIndex, columnIndex) {
 
@@ -373,11 +386,10 @@
 		return canvasForPieces.toDataURL();
 	};
 
+
 	function createPuzzleMatrix () {
 		
 		puzzle = [];
-
-		var order = 0;
 		
 		var rowIndex = 0,
 			totalRows = grid.rows,
@@ -390,18 +402,16 @@
 
 			for (columnIndex = 0; columnIndex < totalColumns; columnIndex++) {
 
-				puzzle[rowIndex][columnIndex] = {
-					order: order
-				};
-
-				order++;
+				puzzle[rowIndex][columnIndex] = {};
 			}
 		}
 	};
 
+
 	function populatePuzzleMatrix () {
 
-		var rowIndex = 0,
+		var order = 0,
+			rowIndex = 0,
 			totalRows = grid.rows,
 			columnIndex = 0,
 			totalColumns = grid.columns;
@@ -412,8 +422,38 @@
 
 				var puzzlePartImage = getPuzzlePartImage(rowIndex, columnIndex);
 				puzzle[rowIndex][columnIndex].image = puzzlePartImage;
+
+				puzzle[rowIndex][columnIndex].order = order;
+
+				order++;
 			}
 		}	
+	};
+
+
+	function populatePuzzleContainer () {
+
+		var puzzleFragment = document.createDocumentFragment();
+
+		var rowIndex = 0,
+			totalRows = grid.rows,
+			columnIndex = 0,
+			totalColumns = grid.columns;
+
+		for ( ; rowIndex < totalRows; rowIndex++) {
+
+			for (columnIndex = 0; columnIndex < totalColumns; columnIndex++) {
+
+				var puzzlePartImage = puzzle[rowIndex][columnIndex].image,
+					puzzlePiece = document.createElement('div');
+
+				puzzlePiece.setAttribute('class', 'puzzle-piece');
+				
+				puzzleFragment.appendChild(puzzlePiece);
+			}
+		}	
+
+		puzzleContainer.append(puzzleFragment);
 	};
 
 
@@ -425,8 +465,9 @@
 
 		populatePuzzleMatrix();
 
-		var stepThreeContainer = $('step-three-container');
-		showContainer(stepThreeContainer);
+		populatePuzzleContainer();
+
+		animateContainersPresentation('step-two-container', 'step-three-container');
 	};
 
 
@@ -437,68 +478,4 @@
 })();
 
 
-
-
-
-
-
-
-
-
-
-          
-
-
-          function createImageParts (imageData) {
-
-            var canvas = document.createElement('canvas');
-
-          }
-
-          
-
-          // read image
-
-          // split image into equal parts inside the canvas
-
-          // generate canvas images
-
-          // place canvas images inside the puzzle
-
-
-/*
-
-          var container = document.getElementById('container');
-            var mc = new Hammer(container);
-
-            Hammer.defaults.domEvents = true;
-
-            var width  = parseInt(container.clientWidth, 10),
-                height = parseInt(container.clientHeight, 10),
-                x = parseInt(container.offsetLeft, 10),
-                y = parseInt(container.offsetTop, 10);
-
-            mc.on("pan", function(ev) {
-
-              if (ev.srcEvent.target.className.indexOf('corner') === -1) {
-
-                container.style.left = x + ev.deltaX + 'px';
-                container.style.top  = y + ev.deltaY + 'px';
-              }
-            });
-
-            mc.on("panend", function(ev) {
-
-                x = parseInt(container.offsetLeft, 10),
-                y = parseInt(container.offsetTop, 10);
-            });
-
-            var corner = document.getElementById('corner');
-            cornerMc = new Hammer(corner);
-
-            cornerMc.on('pan', function (ev) {
-                container.style.width  = width + ev.deltaX + 'px';
-                container.style.height = height + ev.deltaY + 'px';
-            });
-
-            */
+         

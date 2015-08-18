@@ -23,6 +23,17 @@
 }
 
 
+/** First step container **/
+#step-one-container {
+    margin: 0 auto;
+}
+
+.completed:after{
+    content: ' \2713';
+    color: green;
+}
+
+
 /** Second step container **/
 #step-two-container canvas {
     margin: 0 auto;
@@ -86,4 +97,12 @@
     font-size: 2em;
     font-weight: bold;
     line-height: 100px;
+}
+
+
+/** Third step container **/
+.puzzle-piece {
+    position: absolute;
+    border: 1px solid #fff;
+    box-sizing: border-box;
 }
