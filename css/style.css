@@ -101,8 +101,18 @@
 
 
 /** Third step container **/
+#puzzle-container {
+    position: relative;
+}
+
 .puzzle-piece {
     position: absolute;
     border: 1px solid #fff;
     box-sizing: border-box;
+    cursor: pointer;
+}
+
+.puzzle-piece img {
+    width: 100%;
+    height: 100%;
 }

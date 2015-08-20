@@ -433,6 +433,11 @@
 
 	function populatePuzzleContainer () {
 
+		puzzleContainer.css({
+			width:  canvas.width + 'px',
+			height: canvas.height + 'px'
+		});
+
 		var puzzleFragment = document.createDocumentFragment();
 
 		var rowIndex = 0,
@@ -440,20 +445,58 @@
 			columnIndex = 0,
 			totalColumns = grid.columns;
 
+		var piecePercentageWidth  = 100 / grid.columns,
+			piecePercentageHeight = 100/ grid.rows;
+
 		for ( ; rowIndex < totalRows; rowIndex++) {
 
 			for (columnIndex = 0; columnIndex < totalColumns; columnIndex++) {
 
-				var puzzlePartImage = puzzle[rowIndex][columnIndex].image,
-					puzzlePiece = document.createElement('div');
+				var puzzlePart  = puzzle[rowIndex][columnIndex],
+					puzzlePiece = document.createElement('div'),
+					pieceImage  = document.createElement('img');
+
+				pieceImage.src = puzzlePart.image;
 
 				puzzlePiece.setAttribute('class', 'puzzle-piece');
-				
+				puzzlePiece.style.width  = piecePercentageWidth + '%';
+				puzzlePiece.style.height = piecePercentageHeight + '%';
+
+				var xPercentage = columnIndex * piecePercentageWidth,
+					yPercentage = rowIndex * piecePercentageHeight;
+				puzzlePiece.style.left = xPercentage + '%';
+				puzzlePiece.style.top  = yPercentage + '%';
+
+				puzzlePiece.appendChild(pieceImage);
 				puzzleFragment.appendChild(puzzlePiece);
+
+				puzzlePiece.setAttribute('data-order', puzzlePart.order);
+				puzzlePiece.setAttribute('data-row', rowIndex);
+				puzzlePiece.setAttribute('data-column', columnIndex);
+
+				$(puzzlePiece).on('click', function (ev) {
+					movePiece(ev);
+				});
+
+				var isLastPiece = (columnIndex === totalColumns - 1 && rowIndex === totalRows - 1);
+				if (isLastPiece) {
+					pieceImage.style.opacity = '0';
+				}
 			}
 		}	
 
 		puzzleContainer.append(puzzleFragment);
+	};
+
+
+	function movePiece (ev) {
+
+		var pieceImage  = ev.target,
+			puzzlePiece = pieceImage.parentNode,
+			rowIndex    = puzzlePiece.getAttribute('data-row'),
+			columnIndex = puzzlePiece.getAttribute('data-column');
+
+		console.log(rowIndex, columnIndex)
 	};
 
 
